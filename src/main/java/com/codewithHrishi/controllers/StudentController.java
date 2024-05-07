@@ -1,11 +1,14 @@
 package com.codewithHrishi.controllers;
 
+import java.security.Principal;
 import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +28,7 @@ import com.codewithHrishi.util.Appconstant;
 import jakarta.validation.Valid;
 
 @RestController
+//@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/student")
 public class StudentController {
 	@Autowired
@@ -37,7 +41,7 @@ Studentservice serv;
 	public ResponseEntity<StudentDto> createStudent(@Valid @RequestBody StudentDto s) {
 	    return new ResponseEntity<>(this.serv.createStudent(s), HttpStatus.CREATED);
 	}
-	
+
 	@GetMapping("/")
 	ResponseEntity<List<StudentDto>>getAllStudent(){
 		return new ResponseEntity<List<StudentDto>>(this.serv.getAllStudents(),HttpStatus.OK);
@@ -65,6 +69,10 @@ Studentservice serv;
 
 		return new ResponseEntity<StudentResponse>(this.serv.getAllStudentswithPagination(pageSize,pageNum,sortBy,sortDir),HttpStatus.OK);
 	}
-	
+	@GetMapping("/current")
+public String getLoggedIn(Principal principal){
+		return principal.getName();
+		
+	}
 
 }

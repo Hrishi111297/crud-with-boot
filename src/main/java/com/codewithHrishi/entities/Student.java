@@ -1,5 +1,10 @@
 package com.codewithHrishi.entities;
 
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +22,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Student {
+public class Student  {
+	//second step of Security we cant directly return username so we are returning the processed student object
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 private int id;
@@ -31,4 +37,6 @@ private long contact;
 private String username;
 
 private String password;
+
+
 }
