@@ -1,28 +1,33 @@
 
 package com.codewithHrishi.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+
+import com.codewithHrishi.security.CustomUserDetailService1;
 
 @Configuration
-public class AppConfig { // step 4
-
-	@Bean
-	public UserDetailsService userDetailService() {
-		UserDetails ayush = User.builder().username("HM1594").password(passwordEncoder().encode("abc")).roles("ADMIN")
-				.build();
-		UserDetails hrishi = User.builder().username("hrishi").password(passwordEncoder().encode("abc")).roles("ADMIN")
-				.build();
-		return new InMemoryUserDetailsManager(ayush, hrishi);
-	} // @Bean // public PasswordEncoder passwordEncoder() {O // // For
+public class AppConfig { 
+	// step 4
+//this is for without data base
+//	@Bean
+//	public UserDetailsService userDetailService() {
+//		UserDetails ayush = User.builder().username("HM1594").password(passwordEncoder().encode("abc")).roles("ADMIN")
+//				.build();
+//		UserDetails hrishi = User.builder().username("hrishi").password(passwordEncoder().encode("abc")).roles("ADMIN")
+//				.build();
+//		return new InMemoryUserDetailsManager(ayush, hrishi);
+//	} 
+	
+	
+	
+	// @Bean // public PasswordEncoder passwordEncoder() {O // // For
 //	simplicity,
 //
 //	using NoOpPasswordEncoder
@@ -30,6 +35,8 @@ public class AppConfig { // step 4
 //	passwords as
 //	plain text //
 //	return NoOpPasswordEncoder.getInstance(); // }
+	
+	
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -84,5 +91,16 @@ public class AppConfig { // step 4
 //	jwt api&
 //	jwt api
 //	jwt jackson
+	 
+	 @Autowired
+	 CustomUserDetailService1 userDetailService1;
+	 //for the database authentication
+	 @Bean
+	public DaoAuthenticationProvider daoAuthenticationProvider() {
+		DaoAuthenticationProvider daoAuthenticationProvider=new DaoAuthenticationProvider();
+		daoAuthenticationProvider.setUserDetailsService(userDetailService1);
+		daoAuthenticationProvider.setPasswordEncoder(this.passwordEncoder());
+		return daoAuthenticationProvider;
+	}
 
 }
